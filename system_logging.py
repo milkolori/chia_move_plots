@@ -46,7 +46,7 @@ def read_config(file, section, status):
     config.read(pathname)
     if status == "logging" or status == 'simulate':
         current_status = config.getboolean(section, status)
-    if status == "target_drive_pattern" or status == "source_dirs":
+    elif status == "target_drive_pattern" or status == "source_dirs":
         #lists
         current_status = [item.strip() for item in config.get(section, status).split(',')]
     else:
