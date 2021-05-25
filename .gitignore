@@ -1,5 +1,7 @@
 locks/*
 !locks/.gitkeep
+logs/*
+!logs/.gitkeep
 
 test
 __pycache__
