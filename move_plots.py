@@ -32,6 +32,13 @@ log = logging.getLogger(__name__)
 log.setLevel(level)
 
 
+red='\033[0;31m'
+yellow='\033[0;33m'
+green='\033[0;32m'
+white='\033[0;37m'
+blue='\033[0;34m'
+nc='\033[0m'
+
 def get_status_file_name(prefix: str, plot_dir: str, plot_file: str):
     log.debug(f'plot_dir  {plot_dir} ')
     dir_name_index = len(plot_dir.split('/')) - 1
@@ -136,14 +143,15 @@ def move_plot():
             create_progress_file(plot_dir, plot_name)
             create_receive_lock(dest_dir, plot_name)
 
-            log.debug(f'Moving file')
             plot_path = plot_dir + plot_name
             if read_config(config_file_name, 'env_params', 'simulate'):
                 log.debug(
-                    f'This is a simulation, nothing will be moved! for moving "{plot_path}" to "{dest_dir}"')
+                    f'{yellow}This is a simulation, nothing will be moved!{nc}')
                 log.debug(
-                    f'Simulation for moving "{plot_path}" to "{dest_dir}"')
+                    f'{yellow}Simulation for moving "{plot_path}" to "{dest_dir}"{nc}')
             else:
+                log.debug(
+                    f'{blue}Moving "{plot_path}" to "{dest_dir}{nc}')
                 subprocess.call(['./move_file.sh', plot_path, dest_dir])
 
             remove_progress_file(plot_dir, plot_name)
