@@ -23,6 +23,7 @@ source_dirs = read_config(
 target_drive_patterns = read_config(
     config_file_name, 'env_params', 'target_drive_pattern').split(',')
 plot_size_gb = float(read_config(config_file_name, 'env_params', 'plot_size_gb'))
+is_simulation=bool(read_config(config_file_name, 'env_params', 'simulate'))
 
 setup_logging(config_file_name)
 level = read_config(config_file_name, 'system_logging', 'log_level')
@@ -40,7 +41,6 @@ blue='\033[0;34m'
 nc='\033[0m'
 
 def get_status_file_name(prefix: str, plot_dir: str, plot_file: str):
-    log.debug(f'plot_dir  {plot_dir} ')
     dir_name_index = len(plot_dir.split('/')) - 1
     dir_name = plot_dir.split('/')[dir_name_index]
     file_name = 'locks/' + prefix + '-' + dir_name + '-' + plot_file
@@ -135,6 +135,7 @@ def get_dest_drive():
 def move_plot():
     plot_dir, plot_name = get_plot_to_move()
 
+    
     if plot_dir and plot_name:
         dest_dir = get_dest_drive()
 
@@ -144,7 +145,7 @@ def move_plot():
             create_receive_lock(dest_dir, plot_name)
 
             plot_path = plot_dir + plot_name
-            if read_config(config_file_name, 'env_params', 'simulate'):
+            if is_simulation:
                 log.debug(
                     f'{yellow}This is a simulation, nothing will be moved!{nc}')
                 log.debug(
