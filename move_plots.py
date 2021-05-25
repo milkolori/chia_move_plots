@@ -22,7 +22,7 @@ source_dirs = read_config(
     config_file_name, 'env_params', 'source_dirs').split(',')
 target_drive_patterns = read_config(
     config_file_name, 'env_params', 'target_drive_pattern').split(',')
-plot_size_gb = int(read_config(config_file_name, 'env_params', 'plot_size_gb'))
+plot_size_gb = float(read_config(config_file_name, 'env_params', 'plot_size_gb'))
 
 setup_logging(config_file_name)
 level = read_config(config_file_name, 'system_logging', 'log_level')
