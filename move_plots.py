@@ -43,7 +43,8 @@ nc = '\033[0m'
 
 
 def get_status_file_name(prefix: str, plot_dir: str, plot_file: str):
-    dir_name_index = len(plot_dir.split('/')) - 1
+    endsWithSlash = plot_dir.endswith('/')
+    dir_name_index = len(plot_dir.split('/')) - (2 if endsWithSlash else 1)
     dir_name = plot_dir.split('/')[dir_name_index]
     file_name = 'locks/' + prefix + '-' + dir_name + '-' + plot_file
     return file_name
