@@ -19,11 +19,12 @@ RECEIVE_FILE_PREFIX = 'copyTo'
 
 config_file_name = sys.argv[1:]
 source_dirs = read_config(
-    config_file_name, 'env_params', 'source_dirs').split(',')
+    config_file_name, 'env_params', 'source_dirs')
 target_drive_patterns = read_config(
-    config_file_name, 'env_params', 'target_drive_pattern').split(',')
-plot_size_gb = float(read_config(config_file_name, 'env_params', 'plot_size_gb'))
-is_simulation=read_config(config_file_name, 'env_params', 'simulate')
+    config_file_name, 'env_params', 'target_drive_pattern')
+plot_size_gb = float(read_config(
+    config_file_name, 'env_params', 'plot_size_gb'))
+is_simulation = read_config(config_file_name, 'env_params', 'simulate')
 
 setup_logging(config_file_name)
 level = read_config(config_file_name, 'system_logging', 'log_level')
@@ -33,12 +34,13 @@ log = logging.getLogger(__name__)
 log.setLevel(level)
 
 
-red='\033[0;31m'
-yellow='\033[0;33m'
-green='\033[0;32m'
-white='\033[0;37m'
-blue='\033[0;34m'
-nc='\033[0m'
+red = '\033[0;31m'
+yellow = '\033[0;33m'
+green = '\033[0;32m'
+white = '\033[0;37m'
+blue = '\033[0;34m'
+nc = '\033[0m'
+
 
 def get_status_file_name(prefix: str, plot_dir: str, plot_file: str):
     dir_name_index = len(plot_dir.split('/')) - 1
@@ -73,7 +75,8 @@ def is_receive_locked(dest_dir: str):
     file_pattern = get_status_file_name(RECEIVE_FILE_PREFIX, dest_dir, "*")
     dest_locks = [lock for lock in pathlib.Path('./').glob(file_pattern)]
     is_locked = len(dest_locks) > 0
-    log.debug(f'is_receive_locked(): Receiving dir {dest_dir} locked status: {is_locked}')
+    log.debug(
+        f'is_receive_locked(): Receiving dir {dest_dir} locked status: {is_locked}')
     return is_locked
 
 
@@ -92,11 +95,12 @@ def remove_receive_lock(dest_dir: str, plot_file):
 
 
 def get_plot_to_move():
-    has_plot_dir=False
+    has_plot_dir = False
     for src_dir in source_dirs:
         try:
             if not os.path.isdir(src_dir):
-                log.debug(f'Source dir {src_dir} does not exists. It will be skipped.')
+                log.debug(
+                    f'Source dir {src_dir} does not exists. It will be skipped.')
                 continue
             plot_to_process = [plot for plot in pathlib.Path(src_dir).glob(
                 "*.plot") if plot.stat().st_size > plot_size_gb and not is_in_progress(src_dir, plot.name)]
@@ -117,11 +121,13 @@ def get_dest_drive():
     try:
         dest_dirs_list = []
         for pattern in target_drive_patterns:
-            dest_dirs_list =  dest_dirs_list + get_plot_drives(pattern, plot_size_gb)
+            dest_dirs_list = dest_dirs_list + \
+                get_plot_drives(pattern, plot_size_gb)
 
         log.debug(f'{dest_dirs_list}')
         if len(dest_dirs_list) == 0:
-            log.debug(f'There are no drives matching {target_drive_patterns} with available space')
+            log.debug(
+                f'There are no drives matching {target_drive_patterns} with available space')
             return False
 
         dest_dirs = [
@@ -135,7 +141,6 @@ def get_dest_drive():
 def move_plot():
     plot_dir, plot_name = get_plot_to_move()
 
-    
     if plot_dir and plot_name:
         dest_dir = get_dest_drive()
 
