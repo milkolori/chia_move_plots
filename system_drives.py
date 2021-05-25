@@ -37,7 +37,7 @@ def get_drive_by_mountpoint(mountpoint):
 def get_all_mounting_points():
     mount = subprocess.getoutput('mount -v')
     mntlines = mount.split('\n')
-    mntpoints= [mount.split()[2] for mount in mntlines]
+    mntpoints= [mount.split()[2] for mount in mntlines if os.path.ismount(mount)]
     return mntpoints
 
 
@@ -54,7 +54,6 @@ def get_plot_drives(target_drive_pattern, plot_size_g):
         log.debug(f'partition: {mountpoint}')
         drive_num_free_space = space_free_plots_by_mountpoint(mountpoint, plot_size_g)
         if mountpoint.startswith(target_drive_pattern) \
-                and os.path.ismount(mountpoint) \
                 and drive_num_free_space >= 1 \
                 and get_drive_by_mountpoint(mountpoint) not in offlined_drives:
             drive = get_drive_by_mountpoint(mountpoint)
