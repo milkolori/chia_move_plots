@@ -43,8 +43,6 @@ def get_plot_drives(target_drive_pattern, plot_size_g):
     available_drives = []
     for mountpoint in get_all_mounting_points():
         drive_num_free_space = space_free_plots_by_mountpoint(mountpoint, plot_size_g)
-        log.debug(f'mountpoint: {mountpoint}')
-        log.debug(f'drive_num_free_space: {drive_num_free_space}')
         if mountpoint.startswith(target_drive_pattern) \
                 and drive_num_free_space >= 1:
             mounting_dir = mountpoint if mountpoint.endswith('/') else mountpoint + '/'
