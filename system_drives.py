@@ -1,10 +1,11 @@
-import psutil
 import shutil
 import sys
 from natsort import natsorted
 import logging
 from system_logging import setup_logging
 from system_logging import read_config
+import subprocess
+import os
 
 config_file_name = sys.argv[1:]
 setup_logging(config_file_name)
@@ -33,6 +34,14 @@ def get_drive_by_mountpoint(mountpoint):
     return (mountpoint.split("/")[2])
 
 
+def get_all_mounting_points():
+    mount = subprocess.getoutput('mount -v')
+    mntlines = mount.split('\n')
+    mntpoints= [mount.split()[2] for mount in mntlines]
+    return mntpoints
+
+
+
 def get_plot_drives(target_drive_pattern, plot_size_g):
     """
 
@@ -41,15 +50,15 @@ def get_plot_drives(target_drive_pattern, plot_size_g):
         offlined_drives = [current_drives.rstrip()
                            for current_drives in offlined_drives_list.readlines()]
     available_drives = []
-    for part in psutil.disk_partitions():
-        log.debug(f'partition: {part}')
-        drive_num_free_space = space_free_plots_by_mountpoint(part.mountpoint, plot_size_g)
-        if part.device.startswith('/dev/sd') \
-                and part.mountpoint.startswith(target_drive_pattern) \
+    for mountpoint in get_all_mounting_points():
+        log.debug(f'partition: {mountpoint}')
+        drive_num_free_space = space_free_plots_by_mountpoint(mountpoint, plot_size_g)
+        if mountpoint.startswith(target_drive_pattern) \
+                and os.path.ismount(mountpoint) \
                 and drive_num_free_space >= 1 \
-                and get_drive_by_mountpoint(part.mountpoint) not in offlined_drives:
-            drive = get_drive_by_mountpoint(part.mountpoint)
-            available_drives.append((part.mountpoint, part.device, drive))
+                and get_drive_by_mountpoint(mountpoint) not in offlined_drives:
+            drive = get_drive_by_mountpoint(mountpoint)
+            available_drives.append((mountpoint, drive))
             
     return available_drives
     # return (natsorted(available_drives)[0])
