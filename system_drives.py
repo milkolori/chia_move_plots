@@ -41,7 +41,7 @@ def get_plot_drives(target_drive_pattern, plot_size_g):
         offlined_drives = [current_drives.rstrip()
                            for current_drives in offlined_drives_list.readlines()]
     available_drives = []
-    for part in psutil.disk_partitions(all=False):
+    for part in psutil.disk_partitions():
         log.debug(f'partition: {part}')
         drive_num_free_space = space_free_plots_by_mountpoint(part.mountpoint, plot_size_g)
         if part.device.startswith('/dev/sd') \
