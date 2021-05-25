@@ -44,7 +44,7 @@ def setup_logging(config_path:str, default_path='./logging.yaml', default_level=
 def read_config(file, section, status):
     pathname = file
     config.read(pathname)
-    if status == "logging":
+    if status == "logging" or status == 'simulate':
         current_status = config.getboolean(section, status)
     else:
         current_status = config.get(section, status)
