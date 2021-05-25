@@ -26,14 +26,6 @@ def space_free_plots_by_mountpoint(drive, plot_size_g):
     return int(bytesto(shutil.disk_usage(drive)[2], 'g') / plot_size_g)
 
 
-def get_drive_by_mountpoint(mountpoint):
-    """
-    This accepts a mountpoint ('/mnt/enclosure0/rear/column2/drive32') and returns the drive:
-    drive32
-    """
-    return (mountpoint.split("/")[2])
-
-
 def get_all_mounting_points():
     mount = subprocess.getoutput('mount -v')
     mntlines = mount.split('\n')
@@ -54,10 +46,8 @@ def get_plot_drives(target_drive_pattern, plot_size_g):
         log.debug(f'partition: {mountpoint}')
         drive_num_free_space = space_free_plots_by_mountpoint(mountpoint, plot_size_g)
         if mountpoint.startswith(target_drive_pattern) \
-                and drive_num_free_space >= 1 \
-                and get_drive_by_mountpoint(mountpoint) not in offlined_drives:
-            drive = get_drive_by_mountpoint(mountpoint)
-            available_drives.append((mountpoint, drive))
+                and drive_num_free_space >= 1:
+            available_drives.append(mountpoint)
             
     return available_drives
     # return (natsorted(available_drives)[0])
