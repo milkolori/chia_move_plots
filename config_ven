@@ -7,4 +7,4 @@ log_level = DEBUG
 source_dirs = /media/mmv/Ven_Work1/, /media/mmv/Ven_Work2/ ,/media/mmv/Ven_Work3/ ,/media/mmv/Ven_Work4/
 target_drive_pattern = /media/mmv/Ven_Chia, /media/mmv/Ven_Plot
 plot_size_gb = 101.3623551
-simulate = True
+simulate = False
