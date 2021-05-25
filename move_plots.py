@@ -22,7 +22,7 @@ source_dirs = read_config(
     config_file_name, 'env_params', 'source_dirs').split(',')
 target_drive_patterns = read_config(
     config_file_name, 'env_params', 'target_drive_pattern').split(',')
-plot_size = int(read_config(config_file_name, 'env_params', 'plot_size'))
+plot_size_gb = int(read_config(config_file_name, 'env_params', 'plot_size_gb'))
 
 setup_logging(config_file_name)
 level = read_config(config_file_name, 'system_logging', 'log_level')
@@ -92,7 +92,7 @@ def get_plot_to_move():
                 log.debug(f'Source dir {src_dir} does not exists. It will be skipped.')
                 continue
             plot_to_process = [plot for plot in pathlib.Path(src_dir).glob(
-                "*.plot") if plot.stat().st_size > plot_size and not is_in_progress(src_dir, plot.name)]
+                "*.plot") if plot.stat().st_size > plot_size_gb and not is_in_progress(src_dir, plot.name)]
             log.debug(f'{plot_to_process[0].name}')
             return (src_dir, plot_to_process[0].name)
         except IndexError:
@@ -110,7 +110,7 @@ def get_dest_drive():
     try:
         dest_dirs_list = []
         for pattern in target_drive_patterns:
-            dest_dirs_list =  dest_dirs_list + get_plot_drives(pattern, plot_size)
+            dest_dirs_list =  dest_dirs_list + get_plot_drives(pattern, plot_size_gb)
 
         log.debug(f'{dest_dirs_list}')
         if len(dest_dirs_list) == 0:

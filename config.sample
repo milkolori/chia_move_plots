@@ -6,5 +6,5 @@ log_level = DEBUG
 [env_params]
 source_dirs=./test/plots_dir1/,./test/plots_dir2/
 target_drive_pattern=Lots_Chia,Lots_Plot
-plot_size=1
+plot_size_gb=1
 simulate = True
