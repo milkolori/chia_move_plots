@@ -37,7 +37,7 @@ def get_drive_by_mountpoint(mountpoint):
 def get_all_mounting_points():
     mount = subprocess.getoutput('mount -v')
     mntlines = mount.split('\n')
-    mntpoints= [mount.split()[2] for mount in mntlines if os.path.ismount(mount)]
+    mntpoints= [mount.split()[2] for mount in mntlines if os.path.ismount(mount.split()[2])]
     return mntpoints
 
 
