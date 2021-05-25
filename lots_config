@@ -1,0 +1,10 @@
+[system_logging]
+logging = True
+log_level = DEBUG
+
+
+[env_params]
+source_dirs=/media/mmv/Lots_Work1,/media/mmv/Lots_Work2,/media/mmv/Lots_Work3,/media/mmv/Lots_Work4,/media/mmv/Lots_Work5,/media/mmv/Lots_Work6,/media/mmv/Lots_Work7,/media/mmv/Lots_Work8
+target_drive_pattern=/media/LotsFarmer/
+plot_size=1
+simulate = True
