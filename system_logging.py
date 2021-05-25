@@ -12,13 +12,13 @@ import logging.handlers
 import configparser
 config = configparser.ConfigParser()
 
-def setup_logging(default_path='./logging.yaml', default_level=logging.CRITICAL, env_key='LOG_CFG'):
+def setup_logging(config_path:str, default_path='./logging.yaml', default_level=logging.CRITICAL, env_key='LOG_CFG'):
     """Module to configure program-wide logging. Designed for yaml configuration files."""
-    log_level = read_config('config', 'system_logging', 'log_level')
+    log_level = read_config(config_path, 'system_logging', 'log_level')
     log = logging.getLogger(__name__)
     level = logging._checkLevel(log_level)
     log.setLevel(level)
-    system_logging = read_config('config', 'system_logging', 'logging')
+    system_logging = read_config(config_path, 'system_logging', 'logging')
     if system_logging:
         path = default_path
         value = os.getenv(env_key, None)

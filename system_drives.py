@@ -1,11 +1,13 @@
 import psutil
 import shutil
+import sys
 from natsort import natsorted
 import logging
 from system_logging import setup_logging
 from system_logging import read_config
 
-setup_logging()
+config_file_name = sys.argv[1:]
+setup_logging(config_file_name)
 level = 'DEBUG'
 level = logging._checkLevel(level)
 logging.basicConfig(format='%(asctime)s %(message)s')

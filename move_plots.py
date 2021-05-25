@@ -24,7 +24,7 @@ target_drive_patterns = read_config(
     config_file_name, 'env_params', 'target_drive_pattern').split(',')
 plot_size = int(read_config(config_file_name, 'env_params', 'plot_size'))
 
-setup_logging()
+setup_logging(config_file_name)
 level = read_config(config_file_name, 'system_logging', 'log_level')
 level = logging._checkLevel(level)
 logging.basicConfig(format='%(asctime)s %(message)s')
@@ -85,8 +85,12 @@ def remove_receive_lock(dest_dir: str, plot_file):
 
 
 def get_plot_to_move():
+    has_plot_dir=False
     for src_dir in source_dirs:
         try:
+            if not os.path.isdir(src_dir):
+                log.debug(f'Source dir {src_dir} does not exists. It will be skipped.')
+                continue
             plot_to_process = [plot for plot in pathlib.Path(src_dir).glob(
                 "*.plot") if plot.stat().st_size > plot_size and not is_in_progress(src_dir, plot.name)]
             log.debug(f'{plot_to_process[0].name}')
@@ -94,7 +98,11 @@ def get_plot_to_move():
         except IndexError:
             log.debug(f'{src_dir} is Empty: No Plots to Process.')
 
-    log.debug(f'All plot directories are empty. Will check again soon!')
+    if has_plot_dir:
+        log.debug(f'All plot directories are empty. Will check again soon!')
+    else:
+        log.debug(f'Source directories are not available')
+
     return (False, False)
 
 
