@@ -1,6 +1,5 @@
 import shutil
 import sys
-from natsort import natsorted
 import logging
 from system_logging import setup_logging
 from system_logging import read_config
@@ -43,11 +42,9 @@ def get_plot_drives(target_drive_pattern, plot_size_g):
                            for current_drives in offlined_drives_list.readlines()]
     available_drives = []
     for mountpoint in get_all_mounting_points():
-        log.debug(f'partition: {mountpoint}')
         drive_num_free_space = space_free_plots_by_mountpoint(mountpoint, plot_size_g)
         if mountpoint.startswith(target_drive_pattern) \
                 and drive_num_free_space >= 1:
             available_drives.append(mountpoint)
             
     return available_drives
-    # return (natsorted(available_drives)[0])

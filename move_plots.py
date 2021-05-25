@@ -57,7 +57,7 @@ def create_progress_file(plot_dir: str, plot_file):
 def remove_progress_file(plot_dir: str, plot_file):
     status_file = get_status_file_name(
         TRANSFER_FILE_PREFIX, plot_dir, plot_file)
-    log.debug(f'Removing progress file {status_file}')
+    log.debug(f'remove_progress_file(): Removing progress file {status_file}')
     os.remove(status_file)
 
 
@@ -66,21 +66,21 @@ def is_receive_locked(dest_dir: str):
     file_pattern = get_status_file_name(RECEIVE_FILE_PREFIX, dest_dir, "*")
     dest_locks = [lock for lock in pathlib.Path('./').glob(file_pattern)]
     is_locked = len(dest_locks) > 0
-    log.debug(f'Receiving dir {dest_dir} locked status: {is_locked}')
+    log.debug(f'is_receive_locked(): Receiving dir {dest_dir} locked status: {is_locked}')
     return is_locked
 
 
 def create_receive_lock(dest_dir: str, plot_file):
     status_file = get_status_file_name(
         RECEIVE_FILE_PREFIX, dest_dir, plot_file)
-    log.debug(f'Creating dest lock {status_file}')
+    log.debug(f'create_receive_lock(*): Creating dest lock {status_file}')
     os.open(status_file, os.O_CREAT)
 
 
 def remove_receive_lock(dest_dir: str, plot_file):
     status_file = get_status_file_name(
         RECEIVE_FILE_PREFIX, dest_dir, plot_file)
-    log.debug(f'Removing dest lock {status_file}')
+    log.debug(f'remove_receive_lock(): Removing dest lock {status_file}')
     os.remove(status_file)
 
 
