@@ -47,5 +47,5 @@ def get_plot_drives(target_drive_pattern, plot_size_g):
                 and drive_num_free_space >= 1:
             mounting_dir = mountpoint if mountpoint.endswith('/') else mountpoint + '/'
             available_drives.append(mounting_dir)
-            
+    log.debug(f'Drives for pattern: {target_drive_pattern}: {available_drives}')
     return available_drives
