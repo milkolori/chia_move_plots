@@ -148,10 +148,10 @@ def move_plot():
                 log.debug(
                     f'{yellow}This is a simulation, nothing will be moved!{nc}')
                 log.debug(
-                    f'{yellow}Simulation for moving "{plot_path}" to "{dest_dir}"{nc}')
+                    f'{yellow}Simulation for moving {green}"{plot_path}"{nc} to {green}"{dest_dir}"{nc}')
             else:
                 log.debug(
-                    f'{blue}Moving "{plot_path}" to "{dest_dir}{nc}')
+                    f'{blue}Moving{nc} {green}"{plot_path}"{nc} to {green}"{dest_dir}{nc}')
                 subprocess.call(['./move_file.sh', plot_path, dest_dir])
 
             remove_progress_file(plot_dir, plot_name)
