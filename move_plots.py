@@ -55,7 +55,7 @@ def is_in_progress(plot_dir: str, plot_file: str):
     #   TRANSFER_FILE_PREFIX, plot_dir, plot_file))
     file_pattern = "*" + plot_file
     log.debug(f'Check in progress for  {file_pattern}')
-    is_in_progress_arr = pathlib.Path('locks').glob(file_pattern)
+    is_in_progress_arr = [lock for lock in pathlib.Path('locks').glob(file_pattern)]
     log.debug(f'files fount  {len(is_in_progress_arr)}')
     is_in_progress = len(is_in_progress_arr) > 0
 
@@ -111,7 +111,7 @@ def get_plot_to_move():
                 continue
             plot_to_process = [plot for plot in pathlib.Path(src_dir).glob(
                 "*.plot") if plot.stat().st_size > plot_size_gb and not is_in_progress(src_dir, plot.name)]
-            log.debug(f'{plot_to_process[0].name}')
+            log.debug(f'{plot_to_process[0].name} will me moved!')
             return (src_dir, plot_to_process[0].name)
         except IndexError:
             log.debug(f'{src_dir} is Empty: No Plots to Process.')
