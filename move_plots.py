@@ -51,8 +51,11 @@ def get_status_file_name(prefix: str, plot_dir: str, plot_file: str):
 
 
 def is_in_progress(plot_dir: str, plot_file: str):
-    is_in_progress = os.path.isfile(get_status_file_name(
-        TRANSFER_FILE_PREFIX, plot_dir, plot_file))
+    #is_in_progress = os.path.isfile(get_status_file_name(
+    #   TRANSFER_FILE_PREFIX, plot_dir, plot_file))
+    is_in_progress_arr = pathlib.Path('locks').glob("*" + plot_file)
+    is_in_progress = len(is_in_progress_arr) > 0
+
     log.debug(f'Check file  {plot_file} in progress: {is_in_progress}')
     return is_in_progress
 
